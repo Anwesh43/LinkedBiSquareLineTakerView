@@ -188,4 +188,27 @@ class BiSquareLineTakerView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : BiSquareLineTakerView) {
+
+        private val animator : Animator = Animator(view)
+        private val bslt : BiSquareLineTaker = BiSquareLineTaker(0)
+        private val paint : Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+
+        fun render(canvas : Canvas) {
+            canvas.drawColor(backColor)
+            bslt.draw(canvas, paint)
+            animator.animate {
+                bslt.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            bslt.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
