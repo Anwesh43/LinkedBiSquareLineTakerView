@@ -25,3 +25,39 @@ fun Int.inverse() : Float = 1f / this
 fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse())
 fun Float.divideScale(i : Int, n : Int) : Float = Math.min(n.inverse(), maxScale(i, n)) * n
 fun Float.sinify() : Float = Math.sin(this * Math.PI).toFloat()
+
+fun Canvas.drawSquareLineTaker(i : Int, scale : Float, w : Float, h : Float, paint : Paint) {
+    val size : Float = Math.min(w, h) / sizeFactor
+    val sf : Float = scale.sinify()
+    val sf1 : Float = sf.divideScale(0, parts)
+    val sf2 : Float = sf.divideScale(1, parts)
+    val sf3 : Float = sf.divideScale(2, parts)
+    val sj : Float = 1f - 2 * i
+    val y : Float = -h * 0.5f * sf3
+    save()
+    scale(1f, sj)
+    save()
+    translate(0f, y)
+    drawRect(RectF(-size / 2, -size * sf1, size / 2, 0f), paint)
+    restore()
+    drawLine(0f, -h / 2, 0f,  -h / 2 + (h / 2 * sf2) + y, paint)
+    restore()
+}
+
+fun Canvas.drawBiSquareLineTaker(scale : Float, w : Float, h : Float, paint : Paint) {
+    for (j in 0..1) {
+        drawSquareLineTaker(j, scale, w, h, paint)
+    }
+}
+
+fun Canvas.drawBSLTNode(i : Int, scale : Float, paint : Paint) {
+    val w : Float = width.toFloat()
+    val h : Float = height.toFloat()
+    paint.color = Color.parseColor(colors[i])
+    paint.strokeCap = Paint.Cap.ROUND
+    paint.strokeWidth = Math.min(w, h) / strokeFactor
+    save()
+    translate(w / 2, h / 2)
+    drawBiSquareLineTaker(scale, w, h, paint)
+    restore()
+}
