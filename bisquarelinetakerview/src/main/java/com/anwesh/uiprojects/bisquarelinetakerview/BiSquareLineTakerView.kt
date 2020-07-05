@@ -213,4 +213,13 @@ class BiSquareLineTakerView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : BiSquareLineTakerView {
+            val view : BiSquareLineTakerView = BiSquareLineTakerView(activity)
+            activity.setContentView(view)
+            return view
+        }
+    }
 }
